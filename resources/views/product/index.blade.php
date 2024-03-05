@@ -1,3 +1,14 @@
-<div>
-    <!-- Live as if you were to die tomorrow. Learn as if you were to live forever. - Mahatma Gandhi -->
-</div>
+@extends('templates.template')
+
+@section('title', 'Страница с товарами')
+
+@section('content')
+    <h1>товары</h1>
+    @foreach($products as $product)
+        <div>{{ $product->id }}</div>
+        <div>{{ $product->title }}</div>
+        <div>{{ $product->price }}</div>
+        <div>{{ $product->category->title }}</div>
+        <hr>
+    @endforeach
+@endsection

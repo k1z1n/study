@@ -2,39 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Product $products)
+    public function index()
     {
-        Product::all();
+        $products = Product::all();
         return view('product.index', compact('products'));
     }
-
     public function create()
     {
-//        Category $categories
-//        Category::all();
-//        compact('categories')
-        return view('product.create',);
+        return view('product.create');
     }
-
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('product.show', compact('product'));
+    }
+    public function edit()
+    {
+        $categories = Category::all();
+        return view('product.edit', compact('categories'));
+    }
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'title' => 'required|min:2|max:100',
-            'price' => 'required|min:2|max:10'
+        $validatedDate = $request->validate([
+            'title' => 'required|min:2',
+            'price' => 'required|min:2|numeric',
+            'category_id' => 'required'
         ]);
 
-        Product::created($validatedData);
+        Product::create($validatedDate);
 
-        return redirect()->route('product.index')->with('success', 'норм все');
+        return redirect()->route('product.create')->with('success', 'товар успешно добавлен');
     }
-
-    public function show(Product $product)
+    public function update(Request $request, $id)
     {
-        re
+        $product = Product::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'title' => 'required|min:2',
+            'price' => 'required|min:2|numeric',
+            'category_id' => 'required'
+        ]);
+
+        $product->update($validatedData);
+
+        return redirect()->route('product.edit')->with('success', 'товар обновлен');
     }
+    public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete($id);
+
+        return redirect()->route('product.index')->with('success', 'товар успешно удален');
+    }
+
 }

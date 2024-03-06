@@ -1,3 +1,3 @@
-<div>
-    <!-- Do what you can, with what you have, where you are. - Theodore Roosevelt -->
-</div>
+<header style="display: flex; justify-content: center;">
+    <h6>HEADER</h6>
+</header>
